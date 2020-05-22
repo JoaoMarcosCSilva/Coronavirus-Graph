@@ -4,7 +4,7 @@ parser = argparse.ArgumentParser(
     description="Plots a graph of the current coronavirus spread in the given countries. The data is pulled from the website https://data.humdata.org/dataset/novel-coronavirus-2019-ncov-cases.")
 
 parser.add_argument('-b','--begin', type = int, metavar = 'N', help = 'Begin plotting from day of case N', default = 100)
-parser.add_argument('countries', nargs='+', help = 'List of countries whose information is to be plotted')
+parser.add_argument('countries', nargs='*', help = 'List of countries whose information is to be plotted')
 parser.add_argument('-U', help = 'Updates data before plotting', action = 'store_true')
 
 parser.add_argument('-l', '--log', help='Plots on a logarithmic scale', action='store_true')
@@ -25,10 +25,10 @@ import data
 if cmd.U:
     data.download_data()
 
+if len(cmd.countries) > 0:
+    p,c = data.process_data(*data.load_data())
 
-p,c = data.process_data(*data.load_data())
+    row_mask = [cmd.no_daily, cmd.no_cumulative]
+    col_mask = [cmd.no_cases, cmd.no_deaths, cmd.no_recoveries, cmd.no_active]
 
-row_mask = [cmd.no_daily, cmd.no_cumulative]
-col_mask = [cmd.no_cases, cmd.no_deaths, cmd.no_recoveries, cmd.no_active]
-
-visualization.main_plot_countries(c, cmd.countries, cmd.begin, cmd.log, row_mask, col_mask)
+    visualization.main_plot_countries(c, cmd.countries, cmd.begin, cmd.log, row_mask, col_mask)
