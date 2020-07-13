@@ -143,4 +143,3 @@ def process_data(df_cases, df_deaths, df_recover):
     
     return Provinces, Countries
         
-        

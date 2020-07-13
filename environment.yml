@@ -1,0 +1,9 @@
+name: coronagraph
+dependencies:
+    - numpy
+    - pandas
+    - matplotlib
+    - pip
+    - pip:
+        - hdx-python-api
+    
